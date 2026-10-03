@@ -5,7 +5,7 @@ public class Member {
     private String name;
     private int activeLoans;
 
-    public Member(String id, String name, int activeLoans) {
+    public Member(String id, String name) {
         this.id = id;
         this.name = name;
         this.activeLoans = 0;
@@ -21,5 +21,20 @@ public class Member {
 
     public int getActiveLoans() {
         return activeLoans;
+    }
+
+    public void borrowBook() {
+        activeLoans++;
+    }
+
+    public void returnBook() {
+        if (activeLoans > 0) {
+            activeLoans--;
+        }
+    }
+
+
+    public boolean canBorrow() {
+        return activeLoans < 3;
     }
 }
