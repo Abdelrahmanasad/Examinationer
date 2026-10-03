@@ -48,4 +48,28 @@ public class Library {
         }
         return null;
     }
+
+    public boolean borrowBook(String isbn, String memberId) {
+        Book book = findBook(isbn);
+        Member member = findMember(memberId);
+        if (book != null && member != null && member.canBorrow()) {
+            member.borrowBook();
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean returnBook(String isbn, String memberId) {
+        Book book = findBook(isbn);
+        Member member = findMember(memberId);
+
+        if (book != null && member != null && member.getActiveLoans() > 0) {
+            member.returnBook();
+            return true;
+        }
+
+        return false;
+    }
+
 }
