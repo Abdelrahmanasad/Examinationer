@@ -30,4 +30,22 @@ public class Library {
         }
         return false;
     }
+
+    public Book findBook(String isbn) {
+        for (int i = 0; i < bookCount; i++) {
+            if (books[i].isbn().equalsIgnoreCase(isbn)) {
+                return books[i];
+            }
+        }
+        return null;
+    }
+
+    public Member findMember(String id) {
+        for (int i = 0; i < memberCount; i++) {
+            if (members[i].getId().equalsIgnoreCase(id)) {
+                return members[i];
+            }
+        }
+        return null;
+    }
 }
