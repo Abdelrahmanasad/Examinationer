@@ -37,4 +37,9 @@ public class Member {
     public boolean canBorrow() {
         return activeLoans < 3;
     }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + " | Namn: " + name + " | Aktiva lån: " + activeLoans;
+    }
 }
