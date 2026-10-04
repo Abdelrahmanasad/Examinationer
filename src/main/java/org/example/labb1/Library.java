@@ -72,4 +72,52 @@ public class Library {
         return false;
     }
 
+    public String searchBookByTitleOrAuthor(String search) {
+        StringBuilder result = new StringBuilder();
+        String searchTerm = search.toLowerCase();
+
+        for (int i = 0; i < bookCount; i++) {
+            String title = books[i].title().toLowerCase();
+            String author = books[i].author().toLowerCase();
+
+            if (title.contains(searchTerm) || author.contains(searchTerm)) {
+                // Här hämtar vi fälten direkt utan toString()
+                result.append("Titel: ").append(books[i].title())
+                        .append(" | Författare: ").append(books[i].author())
+                        .append(" | ISBN: ").append(books[i].isbn())
+                        .append("\n");
+            }
+        }
+
+        if (result.length() == 0) {
+            return "Inga böcker hittades för sökningen: " + search;
+        }
+
+        return result.toString();
+    }
+
+    public void displayAllBooks() {
+        if (bookCount == 0) {
+            IO.println("Inga böcker finns registrerade i biblioteket.");
+                    return;
+        }
+        IO.println("Alla böcker i biblioteket:");
+        for (int i = 0; i < bookCount; i++) {
+            IO.println(books[i]);
+        }
+    }
+
+    public void displayAllMembers() {
+        if (memberCount == 0) {
+            IO.println("Inga medlemmar finns registrerade i biblioteket.");
+            return;
+        }
+        IO.println("Alla medlemmar i biblioteket:");
+        for (int i = 0; i < memberCount; i++) {
+            IO.println(members[i]);
+        }
+    }
+
+
+
 }
