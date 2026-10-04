@@ -22,21 +22,71 @@ public class LibraryApp {
 
             switch (choice.toLowerCase()) {
                 case "1":
+                    IO.println("--- Lägg till ny bok --- ");
+                    String isbn = IO.readln("Ange ISBN: ");
+                    String title = IO.readln("Ange titel: ");
+                    String author = IO.readln("Ange författare: ");
 
+                    Book book = new Book(isbn, title, author);
+
+                    boolean added = library.addBook(book);
+                    if (added) {
+                        IO.println("Boken har lagts till i biblioteket.");
+                    } else {
+                        IO.println("Boken kunde inte läggas till i biblioteket.");
+                    }
                     break;
+
                 case "2":
-                    // Kod för att registrera medlem
+                    IO.println("--- Registrera ny medlem --- ");
+                    String id = IO.readln("Ange ID: ");
+                    String name = IO.readln("Ange namn: ");
+
+                    Member member = new Member(id, name);
+
+                    boolean registered = library.addMember(member);
+                    if (registered) {
+                        IO.println("Medlemmen har registrerats.");
+                    } else {
+                        IO.println("Medlemmen kunde inte registreras.");
+                    }
                     break;
+
                 case "3":
-                    // Kod för att låna bok
+                    IO.println("--- Låna bok ---");
+                    isbn = IO.readln("Ange bokens ISBN: ");
+                    String memberId = IO.readln("Ange medlems-ID: ");
+
+                    boolean success = library.borrowBook(isbn, memberId);
+                    if (success) {
+                        IO.println("Boken har lånats ut!");
+                    } else {
+                        IO.println("Kunde inte genomföra lånet. Kontrollera att boken och medlemmen finns samt att medlemmen inte har nått maxgränsen för lån (3 st).");
+                    }
                     break;
+
                 case "4":
-                    // Kod för att lämna tillbaka bok
+                    IO.println("--- Lämna tillbaka bok ---");
+                    String returnIsbn = IO.readln("Ange bokens ISBN: ");
+                    String returnMemberId = IO.readln("Ange medlems-ID: ");
+
+                    boolean returned = library.returnBook(returnIsbn, returnMemberId);
+                    if (returned) {
+                        IO.println("Boken har lämnats tillbaka!");
+                    } else {
+                        IO.println("Kunde inte lämna tillbaka boken. Kontrollera att ISBN och medlems-ID är korrekta samt att medlemmen faktiskt har aktiva lån.");
+                    }
                     break;
+
                 case "5":
-                    // Kod för att söka bok
+                    IO.println("--- Sök bok ---");
+                    String searchTerm = IO.readln("Ange titel eller författare att söka efter: ");
+
+                    library. searchBookByTitleOrAuthor(searchTerm);
                     break;
+
                 case "6":
+                    IO.println("--- Alla böcker i biblioteket ---");
                     library.displayAllBooks();
                     break;
                 case "e":
