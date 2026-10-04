@@ -6,6 +6,7 @@ public class Library {
     private int bookCount;
     private int memberCount;
     private String[] borrowedIsbns = new String[100];
+    private String[] borrowedByMemberIds = new String[100];
     private int borrowedCount = 0;
 
     public Library(int maxBooks, int maxMembers) {
@@ -67,8 +68,7 @@ public class Library {
             return false;
         }
 
-        // Genomför lånet
-        markAsBorrowed(isbn);
+        markAsBorrowed(isbn, memberId);
         member.borrowBook();
         return true;
     }
@@ -118,35 +118,51 @@ public class Library {
         IO.println("Alla böcker i biblioteket:");
         for (int i = 0; i < bookCount; i++) {
             Book b = books[i];
-            String status = isBookBorrowed(b.isbn()) ? "Utlånad" : "Tillgänglig";
+            String borrowerId = getBorrowerId(b.isbn());
+
+            String status;
+            if (borrowerId != null) {
+                Member borrower = findMember(borrowerId);
+                String borrowerName = (borrower != null) ? borrower.getName() : borrowerId;
+                status = "Utlånad till " + borrowerName + " (ID: " + borrowerId + ")";
+            } else {
+                status = "Tillgänglig";
+            }
+
             IO.println("Titel: " + b.title() + " | Författare: " + b.author() + " | ISBN: " + b.isbn() + " | Status: " + status);
         }
     }
 
-    public boolean isBookBorrowed(String isbn) {
+    public String getBorrowerId(String isbn) {
         for (int i = 0; i < borrowedCount; i++) {
             if (borrowedIsbns[i].equalsIgnoreCase(isbn)) {
-                return true;
+                return borrowedByMemberIds[i];
             }
         }
-        return false;
+        return null;
     }
 
-    private void markAsBorrowed(String isbn) {
-        borrowedIsbns[borrowedCount++] = isbn;
+    public boolean isBookBorrowed(String isbn) {
+        return getBorrowerId(isbn) != null;
+    }
+
+    private void markAsBorrowed(String isbn, String memberId) {
+        borrowedIsbns[borrowedCount] = isbn;
+        borrowedByMemberIds[borrowedCount] = memberId;
+        borrowedCount++;
     }
 
     private void markAsReturned(String isbn) {
         for (int i = 0; i < borrowedCount; i++) {
             if (borrowedIsbns[i].equalsIgnoreCase(isbn)) {
                 borrowedIsbns[i] = borrowedIsbns[borrowedCount - 1];
+                borrowedByMemberIds[i] = borrowedByMemberIds[borrowedCount - 1];
+
                 borrowedIsbns[borrowedCount - 1] = null;
+                borrowedByMemberIds[borrowedCount - 1] = null;
                 borrowedCount--;
                 break;
-
-
             }
         }
     }
 }
-
