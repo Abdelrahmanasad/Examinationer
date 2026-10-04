@@ -5,6 +5,8 @@ public class Library {
     private Member[] members;
     private int bookCount;
     private int memberCount;
+    private String[] borrowedIsbns = new String[100];
+    private int borrowedCount = 0;
 
     public Library(int maxBooks, int maxMembers) {
         this.books = new Book[maxBooks];
@@ -52,19 +54,32 @@ public class Library {
     public boolean borrowBook(String isbn, String memberId) {
         Book book = findBook(isbn);
         Member member = findMember(memberId);
-        if (book != null && member != null && member.canBorrow()) {
-            member.borrowBook();
-            return true;
+
+        if (book == null || member == null) {
+            return false;
         }
 
-        return false;
+        if (isBookBorrowed(isbn)) {
+            return false;
+        }
+
+        if (!member.canBorrow()) {
+            return false;
+        }
+
+        // Genomför lånet
+        markAsBorrowed(isbn);
+        member.borrowBook();
+        return true;
     }
+
 
     public boolean returnBook(String isbn, String memberId) {
         Book book = findBook(isbn);
         Member member = findMember(memberId);
 
-        if (book != null && member != null && member.getActiveLoans() > 0) {
+        if (book != null && member != null && isBookBorrowed(isbn)) {
+            markAsReturned(isbn);
             member.returnBook();
             return true;
         }
@@ -81,7 +96,6 @@ public class Library {
             String author = books[i].author().toLowerCase();
 
             if (title.contains(searchTerm) || author.contains(searchTerm)) {
-                // Här hämtar vi fälten direkt utan toString()
                 result.append("Titel: ").append(books[i].title())
                         .append(" | Författare: ").append(books[i].author())
                         .append(" | ISBN: ").append(books[i].isbn())
@@ -99,25 +113,40 @@ public class Library {
     public void displayAllBooks() {
         if (bookCount == 0) {
             IO.println("Inga böcker finns registrerade i biblioteket.");
-                    return;
+            return;
         }
         IO.println("Alla böcker i biblioteket:");
         for (int i = 0; i < bookCount; i++) {
-            IO.println(books[i]);
+            Book b = books[i];
+            String status = isBookBorrowed(b.isbn()) ? "Utlånad" : "Tillgänglig";
+            IO.println("Titel: " + b.title() + " | Författare: " + b.author() + " | ISBN: " + b.isbn() + " | Status: " + status);
         }
     }
 
-    public void displayAllMembers() {
-        if (memberCount == 0) {
-            IO.println("Inga medlemmar finns registrerade i biblioteket.");
-            return;
+    public boolean isBookBorrowed(String isbn) {
+        for (int i = 0; i < borrowedCount; i++) {
+            if (borrowedIsbns[i].equalsIgnoreCase(isbn)) {
+                return true;
+            }
         }
-        IO.println("Alla medlemmar i biblioteket:");
-        for (int i = 0; i < memberCount; i++) {
-            IO.println(members[i]);
-        }
+        return false;
     }
 
+    private void markAsBorrowed(String isbn) {
+        borrowedIsbns[borrowedCount++] = isbn;
+    }
+
+    private void markAsReturned(String isbn) {
+        for (int i = 0; i < borrowedCount; i++) {
+            if (borrowedIsbns[i].equalsIgnoreCase(isbn)) {
+                borrowedIsbns[i] = borrowedIsbns[borrowedCount - 1];
+                borrowedIsbns[borrowedCount - 1] = null;
+                borrowedCount--;
+                break;
 
 
+            }
+        }
+    }
 }
+

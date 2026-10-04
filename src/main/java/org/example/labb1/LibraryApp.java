@@ -82,17 +82,20 @@ public class LibraryApp {
                     IO.println("--- Sök bok ---");
                     String searchTerm = IO.readln("Ange titel eller författare att söka efter: ");
 
-                    library. searchBookByTitleOrAuthor(searchTerm);
+                    String result = library. searchBookByTitleOrAuthor(searchTerm);
+                    IO.println(result);
                     break;
 
                 case "6":
                     IO.println("--- Alla böcker i biblioteket ---");
                     library.displayAllBooks();
                     break;
+
                 case "e":
                     IO.println("Tack för idag! Programmet avslutas.");
                     running = false;
                     break;
+
                 default:
                     IO.println("Ogiltigt val, försök igen.");
             }
