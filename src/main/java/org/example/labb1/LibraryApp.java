@@ -3,6 +3,9 @@ package org.example.labb1;
 public class LibraryApp {
     static void main() {
         Library library = new Library(100, 100);
+
+        library.seedData();
+
         boolean running = true;
 
         while (running) {
@@ -15,6 +18,7 @@ public class LibraryApp {
             IO.println("4. Lämna tillbaka bok");
             IO.println("5. Sök bok (titel eller författare)");
             IO.println("6. Visa alla böcker");
+            IO.println("7. Visa alla medlemmar");
 
             IO.println("e. Avsluta");
 
@@ -89,6 +93,11 @@ public class LibraryApp {
                 case "6":
                     IO.println("--- Alla böcker i biblioteket ---");
                     library.displayAllBooks();
+                    break;
+
+                case "7":
+                    IO.println("--- Alla registrerade medlemmar ---");
+                    library.displayAllMembers();
                     break;
 
                 case "e":

@@ -165,4 +165,33 @@ public class Library {
             }
         }
     }
+
+    public void displayAllMembers() {
+        if (memberCount == 0) {
+            IO.println("Inga medlemmar finns registrerade.");
+            return;
+        }
+        IO.println("Alla registrerade medlemmar:");
+        for (int i = 0; i < memberCount; i++) {
+            Member m = members[i];
+            IO.println("ID: " + m.getId() + " | Namn: " + m.getName() + " | Aktiva lån: " + m.getActiveLoans());
+        }
+    }
+
+    public void seedData() {
+        addBook(new Book("111", "Pippi Långstrump", "Astrid Lindgren"));
+        addBook(new Book("222", "Hundraåringen som klev ut genom fönstret och försvann", "Jonas Jonasson"));
+        addBook(new Book("333", "Män som hatar kvinnor", "Stieg Larsson"));
+        addBook(new Book("444", "En man som heter Ove", "Fredrik Backman"));
+        addBook(new Book("555", "Snabba cash", "Jens Lapidus"));
+        addBook(new Book("666", "Harry Potter and the Philosopher's Stone", "J.K. Rowling"));
+        addBook(new Book("777", "The Lord of the Rings", "J.R.R. Tolkien"));
+        addBook(new Book("888", "1984", "George Orwell"));
+        addBook(new Book("999", "To Kill a Mockingbird", "Harper Lee"));
+        addBook(new Book("112", "The Great Gatsby", "F. Scott Fitzgerald"));
+
+        addMember(new Member("M001", "Samuel"));
+        addMember(new Member("M002", "Abbe"));
+        addMember(new Member("M003", "Amir"));
+    }
 }
